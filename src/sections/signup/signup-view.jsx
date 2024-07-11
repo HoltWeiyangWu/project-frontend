@@ -1,17 +1,14 @@
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -23,18 +20,18 @@ import Copyright from 'src/components/Copyright';
 
 // ----------------------------------------------------------------------
 
-export default function LoginView() {
+export default function SignupView() {
   const theme = useTheme();
 
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleClick = () => {
     router.push('/dashboard');
   };
-
 
   const renderForm = (
     <>
@@ -56,17 +53,22 @@ export default function LoginView() {
             ),
           }}
         />
-      </Stack>
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt:1, mb: 2 }}>
-      <FormControlLabel
-          control={<Checkbox value="remember" color="primary"
-            sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} />}
-              label="Remember me"
+        
+        <TextField
+          required
+          name="confirmPassword"
+          label="Confirm password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                  <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
-         <Link variant="body1" underline="hover" >
-              Forgot passowrd
-          </Link>
       </Stack>
 
       <LoadingButton
@@ -76,17 +78,11 @@ export default function LoginView() {
         variant="contained"
         color="inherit"
         onClick={handleClick}
+        sx={{my: 2}}
       >
-        Login
+        Sign up
       </LoadingButton>
 
-      <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Create account
-          </Link>
-      </Typography>
-      
     </>
   );
 
@@ -116,7 +112,7 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography  variant="h4" sx={{ mb: 3 }}>Sign in</Typography>
+          <Typography  variant="h4" sx={{ mb: 3 }}>Sign up</Typography>
           {renderForm}
           <Copyright/>
         </Card>
