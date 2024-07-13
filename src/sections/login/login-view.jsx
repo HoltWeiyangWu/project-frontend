@@ -5,6 +5,7 @@ import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 import Checkbox from '@mui/material/Checkbox';
 import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
@@ -18,7 +19,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
-import { BACKEND_URL } from 'src/constant/url';
+import { BACKEND_URL } from 'src/constants/url';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
@@ -31,42 +32,36 @@ export default function LoginView() {
 
   const router = useRouter();
   const [input, setInput] = useState({ username: '', password: '' });
-  const [isIncorrect, setIsIncorrect] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({ username: false, password: false });
+  const [empty, setEmpty] = useState({ username: false, password: false });
 
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
       handleClick();
     }
   };
-  const hasEmpty = () => {
-    const { username, password } = input;
-    const usernameIsEmpty = username === '';
-    const passwordIsEmpty = password === '';
-    if (usernameIsEmpty) {
-      setErrors((prevState) => ({
-        ...prevState,
-        username: usernameIsEmpty
-      }));
+  const containsEmptyField = () => {
+    const changeEmptyState = (elem) => {
+      const name = elem[0];
+      const value = elem[1];
+      if (value === '') {
+        setEmpty((prevState) => ({
+          ...prevState,
+          [name]: true
+        }));
+      }
     }
-
-    if (passwordIsEmpty) {
-      setErrors((prevState) => ({
-        ...prevState,
-        password: passwordIsEmpty
-      }));
-    }
-    return !!(usernameIsEmpty || passwordIsEmpty);
+    Object.entries(input).forEach((elem) => { changeEmptyState(elem) });
+    return Object.values(input).includes('');
   }
   const handleClick = async () => {
-    if (hasEmpty()) {
+    if (containsEmptyField()) {
       return;
     }
     setIsLoading(true);
-    setIsIncorrect(false);
-    setErrors({ username: false, password: false });
+    setShowAlert(false);
 
     try {
       const response = await fetch(`${BACKEND_URL}/user/login`, {
@@ -80,7 +75,7 @@ export default function LoginView() {
       router.push('/');
     } catch (error) {
       console.log(error);
-      setIsIncorrect(true);
+      setShowAlert(true);
     } finally {
       setIsLoading(false);
     }
@@ -89,22 +84,23 @@ export default function LoginView() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInput((prevState) => ({ ...prevState, [name]: value }));
-    setErrors((prevState) => ({ ...prevState, [name]: false }));
-    setIsIncorrect(false);
+    setEmpty((prevState) => ({ ...prevState, [name]: false }));
+    setShowAlert(false);
   };
 
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <Collapse in={isIncorrect} onClick={() => setIsIncorrect(false)}>
+        <Collapse in={showAlert}>
           <Alert severity="error">Incorrect username or password.</Alert>
         </Collapse>
         <TextField
           required
           name="username"
           label="Username"
-          error={errors.username}
-          helperText={errors.username ? 'Username is required' : ''}
+          error={empty.username}
+          title='Please put your username here'
+          helperText={empty.username ? 'Username is required' : ''}
           onChange={handleChange}
           onKeyDown={handleEnter}
         />
@@ -114,8 +110,9 @@ export default function LoginView() {
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
-          error={errors.password}
-          helperText={errors.password ? 'Password is required' : ''}
+          title='Please put your password here'
+          error={empty.password}
+          helperText={empty.password ? 'Password is required' : ''}
           onChange={handleChange}
           onKeyDown={handleEnter}
           InputProps={{
@@ -141,9 +138,12 @@ export default function LoginView() {
           }
           label="Remember me"
         />
-        <Link variant="body1" underline="hover">
+        <Tooltip title="Please contact Weiyang to retrieve password, thanks" placement='right' arrow>
+        <Link variant="body1" underline="none">
           Forgot password
         </Link>
+
+        </Tooltip>
       </Stack>
 
       <LoadingButton
@@ -160,7 +160,7 @@ export default function LoginView() {
 
       <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
         Don’t have an account?
-        <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+        <Link href="/signup" variant="subtitle2" sx={{ ml: 0.5 }}>
           Create account
         </Link>
       </Typography>
