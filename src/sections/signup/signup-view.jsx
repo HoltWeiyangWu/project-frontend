@@ -70,12 +70,17 @@ export default function SignupView() {
     setIsLoading(true);
     setIsUnformatted(false);
     try {
-      await fetch(`${BACKEND_URL}/user/register`, {
+      const response = await fetch(`${BACKEND_URL}/user/register`, {
         method: 'POST',
         body: JSON.stringify(input),
         headers: { 'Content-Type': 'application/json' },
       });
-    router.push('/login');
+      // TODO: Complete error handling once the backend is ready
+      const data = await response.json();
+      if (data === -1) {
+        throw Error();
+      }
+      router.push('/login');
     } catch (error) {
       setIsRegistered(true);
     } finally {
@@ -192,6 +197,7 @@ export default function SignupView() {
       }}
     >
       <Logo
+        disabledLink
         sx={{
           position: 'fixed',
           top: { xs: 16, md: 24 },

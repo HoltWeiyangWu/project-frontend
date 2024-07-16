@@ -19,6 +19,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
+import { useAuth } from 'src/authentification';
 import { BACKEND_URL } from 'src/constants/url';
 
 import Logo from 'src/components/logo';
@@ -30,6 +31,7 @@ import Copyright from 'src/components/Copyright';
 export default function LoginView() {
   const theme = useTheme();
 
+  const { login } = useAuth();
   const router = useRouter();
   const [input, setInput] = useState({ username: '', password: '' });
   const [showAlert, setShowAlert] = useState(false);
@@ -69,9 +71,8 @@ export default function LoginView() {
         body: JSON.stringify(input),
         headers: { 'Content-Type': 'application/json' },
       });
-      // TODO: Store JWT from the returned data
       const data = await response.json();
-      console.log(data);
+      login(data.username);
       router.push('/');
     } catch (error) {
       console.log(error);
@@ -178,6 +179,7 @@ export default function LoginView() {
       }}
     >
       <Logo
+        disabledLink
         sx={{
           position: 'fixed',
           top: { xs: 16, md: 24 },
