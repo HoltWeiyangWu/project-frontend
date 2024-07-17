@@ -11,7 +11,6 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
@@ -20,10 +19,11 @@ export default function UserTableRow({
   selected,
   name,
   avatarUrl,
-  company,
   role,
-  isVerified,
-  status,
+  username,
+  email,
+  createTime,
+  updateTime,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
@@ -52,15 +52,16 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{username}</TableCell>
 
         <TableCell>{role}</TableCell>
 
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
+        <TableCell>{email}</TableCell>
 
-        <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
-        </TableCell>
+        <TableCell>{createTime}</TableCell>
+
+        <TableCell>{updateTime}</TableCell>
+
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -95,11 +96,12 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+  username: PropTypes.any,
   handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
+  email: PropTypes.any,
+  createTime: PropTypes.any,
+  updateTime: PropTypes.any,
   name: PropTypes.any,
   role: PropTypes.any,
   selected: PropTypes.any,
-  status: PropTypes.string,
 };

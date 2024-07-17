@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
+import { BACKEND_URL } from 'src/constants/url';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -37,6 +37,29 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [users, setUsers] = useState([]);
+
+
+  // Solution to address infite-loop in state changes of useEffect:
+  // https://stackoverflow.com/questions/65912279/useeffect-causing-infinite-loop-or-getting-errors
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+      const response = await fetch(`${BACKEND_URL}/user/searchAll`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        // TODO: Implement CORS proxy later
+        credentials: 'include',
+      });
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUsers();
+  }, [setUsers]);
+  
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
@@ -123,10 +146,11 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
+                  { id: 'username', label: 'Username' },
                   { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'email', label: 'Email' },
+                  { id: 'createTime', label: 'Create time' },
+                  { id: 'updateTime', label: 'Update time' },
                   { id: '' },
                 ]}
               />
@@ -137,11 +161,12 @@ export default function UserPage() {
                     <UserTableRow
                       key={row.id}
                       name={row.name}
+                      username={row.username}
                       role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
+                      avatarUrl={row.avatar}
+                      email={row.email}
+                      createTime={row.createTime}
+                      updateTime={row.updateTime}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
                     />

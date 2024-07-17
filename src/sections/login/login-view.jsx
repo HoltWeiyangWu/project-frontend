@@ -70,6 +70,8 @@ export default function LoginView() {
         method: 'POST',
         body: JSON.stringify(input),
         headers: { 'Content-Type': 'application/json' },
+        // TODO: Implement CORS proxy later
+        credentials: 'include',
       });
       const data = await response.json();
       login(data.username);
