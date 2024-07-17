@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
-import React, { useMemo, useState, useEffect, useContext, useCallback, createContext } from 'react';
+import React, { useMemo, useState, useContext, useCallback, createContext } from 'react';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -8,15 +8,9 @@ import { useRouter } from 'src/routes/hooks';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // TODO: Implement proper JWT with backend
+    const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('jwt'));
     const router = useRouter();
-
-    useEffect(() => {
-        const token = Cookies.get('jwt');
-        if (token) {
-            setIsAuthenticated(true);
-        }
-    }, []);
 
     const login = useCallback((token) => {
         Cookies.set('jwt', token, { expires: 1 }); // Expires in one day
