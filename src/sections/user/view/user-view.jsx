@@ -39,7 +39,7 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [users, setUsers] = useState([]);
-
+  const [reloadToggle, setReloadToggle] = useState(false);
 
   // Solution to address infite-loop in state changes of useEffect:
   // https://stackoverflow.com/questions/65912279/useeffect-causing-infinite-loop-or-getting-errors
@@ -61,7 +61,7 @@ export default function UserPage() {
       }
     };
     getUsers();
-  }, [setUsers]);
+  }, [setUsers, reloadToggle]);
   
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -166,11 +166,14 @@ export default function UserPage() {
                       name={row.name}
                       username={row.username}
                       role={row.role}
+                      id={row.id}
                       avatarUrl={row.avatar}
                       email={row.email}
                       createTime={row.createTime}
                       updateTime={row.updateTime}
                       selected={selected.indexOf(row.name) !== -1}
+                      reloadStatus={reloadToggle}
+                      handleReload={setReloadToggle}
                       handleClick={(event) => handleClick(event, row.name)}
                     />
                   ))}

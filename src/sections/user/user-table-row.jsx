@@ -1,8 +1,11 @@
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -10,6 +13,12 @@ import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+
+import { BACKEND_URL } from 'src/constants/url';
 
 import Iconify from 'src/components/iconify';
 
@@ -20,14 +29,19 @@ export default function UserTableRow({
   name,
   avatarUrl,
   role,
+  id,
   username,
   email,
   createTime,
   updateTime,
+  reloadStatus,
+  handleReload,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
-
+  const [popUp, setPopUp] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [deleteFail, setDeleteFail] = useState(false);
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -35,6 +49,40 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
+
+  const handleDeleteClick = async() => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/user/delete/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${Cookies.get('token')}` },
+      });
+      const status = await response.text();
+      if (status === 'true') {
+        setDeleteSuccess(true);
+        
+      } else {
+        setDeleteFail(true);
+      }
+    } catch (error) {
+      setDeleteFail(true);
+    } finally {
+      setOpen(null);
+      setPopUp(false);
+    }
+  }
+
+  const handleOpenDialog = () => {
+    setPopUp(true);
+  }
+  const handleCloseDialog = () => {
+    setPopUp(false);
+    setOpen(null);
+  }
+
+  const handleCloseSuccessDelDialog = () => {
+    handleCloseDialog();
+    handleReload(!reloadStatus);
+  }
 
   return (
     <>
@@ -70,6 +118,54 @@ export default function UserTableRow({
         </TableCell>
       </TableRow>
 
+      <Dialog
+        open={popUp}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Delete confirm
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`This user ${username} will be permanently deleted. Do you still want to delete?`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button color="error" onClick={handleDeleteClick} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={deleteSuccess}
+        onClose={handleCloseSuccessDelDialog}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title">
+        {`Successfully delete the user ${username}.`}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={() => { setDeleteSuccess(false); handleCloseSuccessDelDialog() }}>OK</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={deleteFail}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title">
+        {`Fail to delete the user ${username}.`}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={()=>setDeleteFail(false)}>OK</Button>
+        </DialogActions>
+      </Dialog>
+
       <Popover
         open={!!open}
         anchorEl={open}
@@ -85,7 +181,8 @@ export default function UserTableRow({
           Edit
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem disabled={username === JSON.parse(Cookies.get('userObj')).username}
+          onClick={handleOpenDialog} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
@@ -103,5 +200,8 @@ UserTableRow.propTypes = {
   updateTime: PropTypes.any,
   name: PropTypes.any,
   role: PropTypes.any,
+  id: PropTypes.any,
+  reloadStatus: PropTypes.bool,
+  handleReload: PropTypes.func,
   selected: PropTypes.any,
 };
