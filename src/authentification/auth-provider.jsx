@@ -8,18 +8,15 @@ import { useRouter } from 'src/routes/hooks';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    // TODO: Implement proper JWT with backend
-    const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('jwt'));
+    const [isAuthenticated, setIsAuthenticated] = useState(Cookies.get('token'));
     const router = useRouter();
 
     const login = useCallback((token) => {
-        Cookies.set('jwt', token, { expires: 1 }); // Expires in one day
         setIsAuthenticated(true);
         router.push('/');
     }, [router]);
 
     const logout = useCallback(() => {
-        Cookies.remove('jwt');
         setIsAuthenticated(false);
         router.push('/login');
     }, [router]);

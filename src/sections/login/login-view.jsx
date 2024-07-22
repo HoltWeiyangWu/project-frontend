@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
@@ -70,10 +71,15 @@ export default function LoginView() {
         method: 'POST',
         body: JSON.stringify(input),
         headers: { 'Content-Type': 'application/json' },
-        // TODO: Implement CORS proxy later
-        credentials: 'include',
       });
+      // Set JWt and user info into cookies
+      const jwt = response.headers.get('token');
+      Cookies.set('token', jwt,
+        { secure: true, sameSite: 'strict', expires: 1 });
       const data = await response.json();
+      Cookies.set('userObj', JSON.stringify(data),
+        { secure: true, sameSite: 'strict', expires: 1 });
+
       login(data.username);
       router.push('/');
     } catch (error) {

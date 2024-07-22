@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import {useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
@@ -47,8 +48,10 @@ export default function UserPage() {
       try {
       const response = await fetch(`${BACKEND_URL}/user/searchAll`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        // TODO: Implement CORS proxy later
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('token')}`
+        },
         credentials: 'include',
       });
         const data = await response.json();
