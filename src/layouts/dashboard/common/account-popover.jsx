@@ -10,6 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { useAuth } from 'src/authentification';
+
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +33,7 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { logout } = useAuth();
   const account = JSON.parse(Cookies.get('userObj'));
   const [open, setOpen] = useState(null);
 
@@ -41,6 +44,13 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const handleLogout = () => {
+    handleClose();
+    Cookies.remove('token');
+    Cookies.remove('userObj');
+    logout();
+  }
 
   return (
     <>
@@ -106,7 +116,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleLogout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout
