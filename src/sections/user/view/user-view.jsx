@@ -54,7 +54,9 @@ export default function UserPage() {
         },
         credentials: 'include',
       });
-        const data = await response.json();
+        
+        const resObj = await response.json();
+        const {data} = resObj
         setUsers(data);
       } catch (error) {
         console.log(error);

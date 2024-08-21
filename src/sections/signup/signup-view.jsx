@@ -76,7 +76,8 @@ export default function SignupView() {
         headers: { 'Content-Type': 'application/json' },
       });
       // TODO: Complete error handling once the backend is ready
-      const data = await response.json();
+      const resObj = await response.json();
+      const {data} = resObj;
       if (data === -1) {
         throw Error();
       }

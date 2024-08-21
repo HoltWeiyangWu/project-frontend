@@ -76,7 +76,8 @@ export default function LoginView() {
       const jwt = response.headers.get('token');
       Cookies.set('token', jwt,
         { secure: true, sameSite: 'strict', expires: 1 });
-      const data = await response.json();
+      const resObj = await response.json();
+      const { data } = resObj;
       Cookies.set('userObj', JSON.stringify(data),
         { secure: true, sameSite: 'strict', expires: 1 });
 
