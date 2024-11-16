@@ -1,4 +1,4 @@
 // export const BACKEND_URL = 'http://localhost:8080';
 
-// JawsDB Add-on from Heroku deployment
-export const BACKEND_URL = process.env.JAWSDB_URL;
+// Backend app from Heroku deployment
+export const BACKEND_URL = 'https://ancient-garden-92738-39f9e5a5ea2b.herokuapp.com';
