@@ -56,7 +56,7 @@ export default function UserPage() {
       });
         
         const resObj = await response.json();
-        const {data} = resObj
+        const data = resObj?.data ?? [];
         setUsers(data);
       } catch (error) {
         console.log(error);
