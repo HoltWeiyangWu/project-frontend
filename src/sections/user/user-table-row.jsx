@@ -56,8 +56,10 @@ export default function UserTableRow({
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${Cookies.get('token')}` },
       });
-      const status = await response.text();
-      if (status === 'true') {
+
+      const resObj = await response.json();
+      const status = resObj?.data ?? false;
+      if (status) {
         setDeleteSuccess(true);
         
       } else {
