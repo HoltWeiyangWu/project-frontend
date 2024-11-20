@@ -1,46 +1,49 @@
-## Minimal [(Free version)](https://minimal-kit-react.vercel.app/)
+# Holt's Personal Project
+
+## Overview
+
+This project is a full-stack web application built as a personal learning exercise to explore modern web development technologies. The application features a Spring Boot backend connected to a MySQL database for managing and storing data, and modifies a React frontend template provided by Minimal UI.
+
+The project is designed to simulate a real-ward scenario where users are able to search product information and administrators are able to perform user and product management CRUD (Create, Read, Update, Delete) operations. The website is deployed with Heroku and can be potentially deployed with AWS or Azure for future needs.
+
+## Frontend Features
+
+- User registration and login system
+- Admin user management system
+- User authentication system with JWT
+- User settings (TBC)
+- Product display (TBC)
+- Admin product management system (TBC)
+- AI chatterbox (TBC)
+
+## Usage
+
+To login as an administrator, please input "username" for username, "password" for password.
+
+To create an account, please find create account options under sign-in page.
+
+Administrator is able to delete users.
+
+## Quick Start
+
+- **Set up:** Download Node.js and npm.
+- **Install:** Run command "npm run install".
+- **Environment varialbe:** Change BACKEND_URL in "src/constants/url.js" to the one specific to your machine.
+- **Build:** Run command "npm run build".
+- **Start:** Run command "npm run start".
+
+## Reference and License
+
+### Minimal [(Free version)](https://minimal-kit-react.vercel.app/)
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 > Free React Admin Dashboard made with Material-UI components and React.
 
-![preview](public/assets/preview.jpg)
+### Backend application
 
-## Demo
+> https://github.com/HoltWeiyangWu/project-backend
 
-- [Dashboard Page](https://minimal-kit-react.vercel.app/)
-- [Users Page](https://minimal-kit-react.vercel.app/user)
-- [Products Page](https://minimal-kit-react.vercel.app/products)
-- [Blog Page](https://minimal-kit-react.vercel.app/blog)
-- [Login Page](https://minimal-kit-react.vercel.app/login)
-- [Not Found Page](https://minimal-kit-react.vercel.app/404)
-
-## Quick start
-
-- [Download from Github](https://github.com/minimal-ui-kit/material-kit-react/archive/refs/heads/main.zip) or clone the repo : `git clone https://github.com/minimal-ui-kit/material-kit-react.git`
-- Recommended `Node.js v18.x`.
-- **Install:** `yarn install`
-- **Start:** `yarn dev`
-- **Build:** `yarn build`
-
-## Upgrade to PRO Version
-
-| Minimal Free     | [Minimal Pro](https://material-ui.com/store/items/minimal-dashboard/) |
-| :--------------- | :-------------------------------------------------------------------- |
-| **6** Demo Pages | **70+** Demo Pages                                                    |
-| -                | Authentication with **Amplify**, **Auth0**, **JWT** and **Firebase**  |
-| -                | [+More components](https://minimals.cc/components)                    |
-| -                | Dark & light mode                                                     |
-| -                | Next.js version                                                       |
-| -                | TypeScript version (Standard Plus and Extended license)               |
-| -                | Design Figma File (Standard Plus and Extended license)                |
-| -                | Complete Users Flows                                                  |
-| -                | Learn more: [Package & License](https://docs.minimals.cc/package)     |
-
-## License
+### License
 
 Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) for more information.
-
-## Contact us
-
-Email: support@minimals.cc
