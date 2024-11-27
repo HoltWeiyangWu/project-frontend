@@ -9,7 +9,7 @@ The project is designed to simulate a real-ward scenario where users are able to
 ## Frontend Features
 
 - User registration and login system
-- Admin user management system
+- Admin's user management system
 - User authentication system with JWT
 - User settings (TBC)
 - Product display (TBC)

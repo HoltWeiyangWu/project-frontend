@@ -24,12 +24,13 @@ import Copyright from 'src/components/Copyright';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
-
+import { useAvatar } from './avatar-provider';
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
   const account = JSON.parse(Cookies.get('userObj'));
+  const { avatarUrl } = useAvatar();
   const upLg = useResponsive('up', 'lg');
   useEffect(() => {
     if (openNav) {
@@ -51,7 +52,7 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.avatar} alt="photoURL" />
+      <Avatar src={avatarUrl} alt={account.name.charAt(0).toUpperCase()} />
 
       <Box sx={{ ml: 2 }}>
         <Typography variant="subtitle2">{account.name}</Typography>

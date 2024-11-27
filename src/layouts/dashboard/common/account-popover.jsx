@@ -10,32 +10,23 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { useAuth } from 'src/authentification';
 
+import { useAvatar } from '../avatar-provider';
 
-// ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
-];
+
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const { logout } = useAuth();
+  const { avatarUrl } = useAvatar();
   const account = JSON.parse(Cookies.get('userObj'));
   const [open, setOpen] = useState(null);
+  const router = useRouter();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -45,12 +36,17 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
+  const handleSetting = () => {
+    router.push("/setting");
+  }
+
   const handleLogout = () => {
     handleClose();
     Cookies.remove('token');
     Cookies.remove('userObj');
     logout();
   }
+
 
   return (
     <>
@@ -67,7 +63,7 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={account.avatar}
+          src={avatarUrl}
           alt={account.displayName}
           sx={{
             width: 36,
@@ -105,12 +101,12 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
-            {option.label}
+          <MenuItem key='Home' onClick={()=>{router.push("/");}}>
+            Home
           </MenuItem>
-        ))}
-
+          <MenuItem key='Setting' onClick={handleSetting}>
+            Setting
+          </MenuItem>
         <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
 
         <MenuItem
