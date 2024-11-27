@@ -24,6 +24,8 @@ To create an account, please find create account options under sign-in page.
 
 Administrator is able to delete users.
 
+All users can update their profile and avatar.
+
 ## Quick Start
 
 - **Set up:** Download Node.js and npm.
