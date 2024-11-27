@@ -11,7 +11,7 @@ The project is designed to simulate a real-ward scenario where users are able to
 - User registration and login system
 - Admin's user management system
 - User authentication system with JWT
-- User settings (TBC)
+- User settings
 - Product display (TBC)
 - Admin product management system (TBC)
 - AI chatterbox (TBC)
