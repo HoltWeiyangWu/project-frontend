@@ -178,10 +178,11 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
+        {/* TODO: Enable admin to edit user information */}
+        {/* <MenuItem onClick={handleCloseMenu}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem disabled={username === JSON.parse(Cookies.get('userObj')).username}
           onClick={handleOpenDialog} sx={{ color: 'error.main' }}>

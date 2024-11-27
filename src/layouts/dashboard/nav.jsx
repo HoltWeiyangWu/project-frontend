@@ -52,8 +52,9 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={avatarUrl} alt={account.name.charAt(0).toUpperCase()} />
-
+      <Avatar src={avatarUrl} alt={account.name.charAt(0).toUpperCase()} >
+        {account.name.charAt(0).toUpperCase()}
+      </Avatar>
       <Box sx={{ ml: 2 }}>
         <Typography variant="subtitle2">{account.name}</Typography>
 

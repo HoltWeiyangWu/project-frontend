@@ -116,8 +116,10 @@
                             horizontal: 'right',
                         }}>
                         <Avatar src={avatarUrl}
-                        alt={account.name.charAt(0).toUpperCase()}
-                            sx={{ width: 80, height: 80 }} />
+                                alt={account.name.charAt(0).toUpperCase()}
+                                sx={{ width: 80, height: 80 }} >
+                            {account.name.charAt(0).toUpperCase()}
+                        </Avatar>
                     </Badge>
                     <input
                         type="file"
