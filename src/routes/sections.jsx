@@ -29,10 +29,10 @@ export default function Router() {
         </AuthRoute>
       ),
       children: [
-        { element: <IndexPage />, index: true },
+        { element: <ProductsPage />, index: true },
         { path: 'user', element: <UserPage /> },
         { path: 'setting', element: <SettingPage /> },
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'dashboard', element: <IndexPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
